@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanvas Kenali Tim Saya — IPPI</title>
+<style>
+:root{
+  --ink:#101826;
+  --paper:#f6f4ee;
+  --card:#ffffff;
+  --line:#dfd9c8;
+  --accent:#9a3324;
+  --accent-soft:#f1e3dd;
+  --steel:#3c4856;
+  --steel-soft:#e7eaee;
+  --muted:#5b6472;
+  --good:#2f6b4f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.55;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px 80px;}
+a.back{
+  display:inline-block;margin:22px 0 0;color:var(--steel);text-decoration:none;font-size:.86rem;font-weight:600;
+}
+a.back:hover{color:var(--accent)}
+header{padding:6px 0 30px;}
+.eyebrow{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+h1{font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 10px;font-weight:700}
+header p{color:var(--muted);max-width:640px;margin:0;font-size:.97rem}
+
+.identity{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0;}
+.identity input{
+  width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;font-size:.92rem;
+  background:var(--card);font-family:inherit;
+}
+.identity label{display:block;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:5px;font-weight:700}
+
+.side{margin:46px 0 16px;display:flex;align-items:center;gap:10px;}
+.side .pill{
+  background:var(--steel);color:#fff;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 12px;border-radius:999px;
+}
+.side h2{margin:0;font-size:1.35rem;}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px;margin-bottom:24px;}
+.panel p.desc{color:var(--muted);font-size:.92rem;margin:0 0 18px;}
+
+details.scale{margin:0 0 22px;border:1px solid var(--line);border-radius:10px;padding:0;background:#fbfaf6}
+details.scale summary{padding:12px 16px;cursor:pointer;font-weight:700;font-size:.88rem;color:var(--steel)}
+.scale-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:4px 16px 16px;font-size:.85rem;}
+.scale-grid h5{margin:0 0 6px;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.scale-grid ol{margin:0;padding-left:20px;color:#3a4250}
+
+.member{
+  border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;background:#fdfcf9;
+  position:relative;
+}
+.member .row1{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;margin-bottom:12px;}
+.member label{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:4px}
+.member input[type=text], .member textarea{
+  width:100%;border:1px solid var(--line);border-radius:7px;padding:9px 11px;font-size:.9rem;font-family:inherit;background:#fff;
+}
+.member textarea{resize:vertical;min-height:46px}
+.member input[type=range]{width:100%;}
+.range-val{font-weight:800;color:var(--accent);font-size:.95rem;margin-left:8px}
+.member .remove{
+  position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;
+}
+.member .remove:hover{color:var(--accent)}
+.member .badge-quad{
+  display:inline-block;margin-top:6px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  padding:3px 10px;border-radius:999px;background:var(--steel-soft);color:var(--steel);
+}
+
+#addMember{
+  font-weight:700;border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);
+  padding:11px 18px;border-radius:8px;cursor:pointer;font-size:.9rem;
+}
+
+.guard{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap}
+.guard select{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;background:#fff;font-size:.88rem}
+.guard label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:5px}
+.guard .g-col{flex:1;min-width:220px}
+
+.matrix-wrap{margin-top:26px;text-align:center}
+svg#matrix{width:100%;max-width:560px;height:auto;}
+.matrix-caption{font-size:.8rem;color:var(--muted);margin-top:8px}
+
+.timeaudit{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+.timeaudit .col label{font-size:.82rem;color:var(--steel);font-weight:700;display:block;margin-bottom:6px}
+.timeaudit input[type=number]{width:90px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;font-family:inherit}
+.bar-row{margin-top:14px;background:#eee;border-radius:8px;height:14px;overflow:hidden;display:flex}
+.bar-row .urgent{background:var(--accent)}
+.bar-row .important{background:var(--good)}
+.bar-label{font-size:.78rem;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between}
+
+.statements{display:grid;gap:10px;margin-top:10px}
+.statement{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid var(--line);
+  border-radius:8px;padding:11px 14px;background:#fff;font-size:.88rem}
+.statement select{padding:6px 9px;border:1px solid var(--line);border-radius:6px;font-family:inherit}
+
+.summary{
+  background:var(--steel);color:#eef0f2;border-radius:14px;padding:26px 28px;margin-top:30px;
+}
+.summary h3{margin:0 0 6px;font-size:1.15rem;color:#fff}
+.summary p.sub{color:#c4cad1;font-size:.86rem;margin:0 0 18px}
+.summary .actions{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.summary button{
+  font-weight:700;border:none;border-radius:8px;padding:11px 18px;cursor:pointer;font-size:.88rem;
+}
+.summary button.print{background:#fff;color:var(--steel)}
+.summary button.send{background:var(--accent);color:#fff}
+#summaryList{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
+#summaryList li{background:rgba(255,255,255,.07);border-radius:8px;padding:9px 12px;font-size:.86rem;}
+#summaryEmpty{font-size:.86rem;color:#c4cad1}
+.shared-note{font-size:.76rem;color:#9aa3ad;margin-top:14px;line-height:1.5}
+
+.warn{
+  margin-top:24px;border:1px dashed var(--accent);background:var(--accent-soft);border-radius:10px;
+  padding:13px 16px;font-size:.84rem;color:#6b2e20;
+}
+
+footer{padding:30px 0;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);margin-top:40px}
+
+@media(max-width:680px){
+  .identity{grid-template-columns:1fr}
+  .member .row1{grid-template-columns:1fr}
+  .timeaudit{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="Pre-Flight_Playbook_IPPI.html">&lsaquo; Kembali ke Pre-Flight Playbook</a>
+
+  <header>
+    <div class="eyebrow">Diagnostik &middot; Komponen B</div>
+    <h1>Kanvas Kenali Tim Saya</h1>
+    <p>Petakan lima orang team Anda dalam departemen Anda.</p>
+  </header>
+
+  <div class="identity">
+    <div><label>Nama Anda</label><input type="text" id="bmName" placeholder="Nama Anda"></div>
+    <div><label>NIP (opsional)</label><input type="text" id="bmNip" placeholder="NIP"></div>
+    <div><label>Departemen</label><input type="text" id="bmBranch" placeholder="Nama departemen"></div>
+  </div>
+
+  <div class="side"><span class="pill">Sisi 1 &middot; Ke Luar</span><h2>Petakan Tim Anda</h2></div>
+
+  <div class="panel">
+    <p class="desc">Untuk tiap anggota, tentukan Skill dan Will pada skala satu sampai empat, lalu sertakan satu bukti perilaku nyata dari bulan terakhir. Bukti ini wajib, sebagai pengaman agar penilaian tidak melayang dari kesan semata. Begitu Anda mengisi, posisi mereka langsung muncul di grid sebelah.</p>
+
+    <details class="scale">
+      <summary>Lihat acuan skala Skill dan Will</summary>
+      <div class="scale-grid">
+        <div>
+          <h5>Skill, kemampuan</h5>
+          <ol>
+            <li>Perlu diarahkan langkah demi langkah, sering dikoreksi.</li>
+            <li>Bisa tugas rutin sendiri, ragu pada situasi baru.</li>
+            <li>Menguasai tugasnya, sesekali jadi rujukan rekan.</li>
+            <li>Ahli, jadi tumpuan, sanggup menangani yang tak terduga.</li>
+          </ol>
+        </div>
+        <div>
+          <h5>Will, kemauan dan motivasi</h5>
+          <ol>
+            <li>Enggan, menunggu disuruh, energi rendah.</li>
+            <li>Mau kalau diminta, perlu didorong.</li>
+            <li>Cukup berinisiatif pada hal yang disukai.</li>
+            <li>Antusias, mencari tantangan, menularkan semangat.</li>
+          </ol>
+        </div>
+      </div>
+    </details>
+
+    <div id="members"></div>
+    <button id="addMember">+ Tambah anggota</button>
+
+    <div class="warn" style="margin-top:24px">
+      <strong>Pengaman keputusan.</strong> Dua pertanyaan ini memaksa Anda membedakan, bukan menilai semua orang sama.
+      <div class="guard">
+        <div class="g-col"><label>Siapa paling siap dilepas?</label><select id="guardReady"><option value="">Pilih anggota&hellip;</option></select></div>
+        <div class="g-col"><label>Siapa paling butuh diarahkan?</label><select id="guardNeeds"><option value="">Pilih anggota&hellip;</option></select></div>
+      </div>
+      <p style="margin:10px 0 0">Triangulasi skill dengan data kinerja nyata yang sudah Anda pegang, bukan sekadar kesan bulan ini.</p>
+    </div>
+
+    <div class="matrix-wrap">
+      <h3 style="font-size:1.05rem;margin-bottom:4px">Peta Tim Saya</h3>
+      <p class="matrix-caption">Will di sumbu tegak, Skill di sumbu datar. Pembagi ada di nilai 2,5.</p>
+      <svg id="matrix" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <div class="side"><span class="pill" style="background:var(--accent)">Sisi 2 &middot; Ke Dalam</span><h2>Cermin untuk Diri Sendiri</h2></div>
+
+  <div class="panel">
+    <p class="desc">Sebelum menata tim, lihat dulu pola Anda sendiri. Bagian ini menyambung Mindset Primer, dari penagih angka ke arsitek tim.</p>
+
+    <h4 style="margin:0 0 6px">Audit waktu pekan lalu</h4>
+    <p class="desc" style="margin-bottom:14px">Ala kuadran Eisenhower. Perkirakan jam Anda, jujur saja.</p>
+    <div class="timeaudit">
+      <div class="col">
+        <label>Berapa jam untuk menyelesaikan tugas yang mendesak (memadamkan api, menagih, menjawab semua)</label>
+        <input type="number" id="hoursUrgent" min="0" max="80" value="0">
+      </div>
+      <div class="col">
+        <label>Berapa jam menyelesaikan tugas penting (membina orang, merancang, mendelegasikan)</label>
+        <input type="number" id="hoursImportant" min="0" max="80" value="0">
+      </div>
+    </div>
+    <div class="bar-row" id="barRow"><div class="urgent" style="width:50%"></div><div class="important" style="width:50%"></div></div>
+    <div class="bar-label"><span>Mendesak</span><span>Penting</span></div>
+
+    <h4 style="margin:30px 0 6px">Tiga pernyataan jujur soal delegasi</h4>
+    <p class="desc" style="margin-bottom:4px">Tandai seberapa sering ini terjadi di departemen Anda.</p>
+    <div class="statements">
+      <div class="statement"><span>Saya mengambil alih tugas karena lebih cepat dikerjakan sendiri.</span>
+        <select><option>Pilih&hellip;</option><option>Hampir selalu</option><option>Sering</option><option>Kadang</option><option>Jarang</option></select></div>
+      <div class="statement"><span>Anggota tim menunggu arahan saya untuk keputusan kecil sekalipun.</span>
+        <select><option>Pilih&hellip;</option><option>Hampir selalu</option><option>Sering</option><option>Kadang</option><option>Jarang</option></select></div>
+      <div class="statement"><span>Saya tahu siapa di tim yang siap diberi tanggung jawab lebih besar.</span>
+        <select><option>Pilih&hellip;</option><option>Hampir selalu</option><option>Sering</option><option>Kadang</option><option>Jarang</option></select></div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <h3>Peta Tim Saya, siap dibawa ke kelas</h3>
+    <p class="sub">Ringkasan ini yang Anda bawa ke Sesi 1. Item akan terisi otomatis dari yang Anda masukkan di atas.</p>
+    <div class="actions">
+      <button class="print" onclick="window.print()">Simpan PDF</button>
+      <button class="send" id="sendBtn">Kirim Pemetaan &rsaquo;</button>
+    </div>
+    <p id="summaryEmpty">Belum ada anggota yang lengkap Skill dan Will-nya. Isi dulu di atas.</p>
+    <ul id="summaryList" style="display:none"></ul>
+    <p class="shared-note">Kirim Pemetaan akan membagikan data ini ke penyelenggara program untuk analisis tim secara menyeluruh. Simpan PDF untuk arsip pribadi Anda.</p>
+  </div>
+
+  <div class="warn" style="margin-top:24px">
+    &#9888; Data hanya tersimpan sementara di halaman ini. Cetak atau simpan PDF sebelum menutup, agar tidak hilang.
+  </div>
+
+  <footer>
+    www.ippi.co.id &middot; PT Inti Pantja Press Industri (IPPI)<br>
+    Developing Winning Team &middot; Level Intermediate. Materi pembelajaran internal untuk Branch Manager IPPI. Strictly confidential.
+  </footer>
+</div>
+
+<script>
+let members = [];
+let idCounter = 0;
+
+function newMember(name=""){
+  idCounter++;
+  return {id:idCounter, name:name, skill:2, will:2, evidence:""};
+}
+
+function quadrant(skill,will){
+  if(skill>=2.5 && will>=2.5) return {label:"Delegasikan", cls:"DELEGASIKAN"};
+  if(skill<2.5 && will>=2.5) return {label:"Bimbing", cls:"BIMBING"};
+  if(skill>=2.5 && will<2.5) return {label:"Nyalakan", cls:"NYALAKAN"};
+  return {label:"Arahkan", cls:"ARAHKAN"};
+}
+
+function renderMembers(){
+  const wrap = document.getElementById('members');
+  wrap.innerHTML = "";
+  members.forEach((m,idx)=>{
+    const div = document.createElement('div');
+    div.className = 'member';
+    div.innerHTML = `
+      <button class="remove" title="Hapus anggota" data-id="${m.id}">&times;</button>
+      <div class="row1">
+        <div><label>Nama anggota</label><input type="text" data-field="name" data-id="${m.id}" value="${m.name.replace(/"/g,'&quot;')}" placeholder="Nama anggota tim"></div>
+        <div><label>Skill <span class="range-val" id="skillval-${m.id}">${m.skill}</span></label><input type="range" min="1" max="4" step="1" data-field="skill" data-id="${m.id}" value="${m.skill}"></div>
+        <div><label>Will <span class="range-val" id="willval-${m.id}">${m.will}</span></label><input type="range" min="1" max="4" step="1" data-field="will" data-id="${m.id}" value="${m.will}"></div>
+      </div>
+      <label>Bukti perilaku nyata, bulan terakhir</label>
+      <textarea data-field="evidence" data-id="${m.id}" placeholder="Contoh: menyelesaikan dua dokumen nasabah yang nyaris kedaluwarsa tanpa diminta.">${m.evidence}</textarea>
+      <div class="badge-quad">${quadrant(m.skill,m.will).label}</div>
+    `;
+    wrap.appendChild(div);
+  });
+
+  wrap.querySelectorAll('input,textarea').forEach(el=>{
+    el.addEventListener('input', onFieldChange);
+  });
+  wrap.querySelectorAll('.remove').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      members = members.filter(m=>m.id !== parseInt(btn.dataset.id));
+      renderMembers(); renderGuardSelects(); renderMatrix(); renderSummary();
+    });
+  });
+
+  renderGuardSelects();
+  renderMatrix();
+  renderSummary();
+}
+
+function onFieldChange(e){
+  const id = parseInt(e.target.dataset.id);
+  const field = e.target.dataset.field;
+  const m = members.find(x=>x.id===id);
+  if(!m) return;
+  if(field==='skill' || field==='will'){
+    m[field] = parseInt(e.target.value);
+    document.getElementById((field==='skill'?'skillval-':'willval-')+id).textContent = m[field];
+    const badge = e.target.closest('.member').querySelector('.badge-quad');
+    badge.textContent = quadrant(m.skill,m.will).label;
+  } else {
+    m[field] = e.target.value;
+  }
+  renderGuardSelects();
+  renderMatrix();
+  renderSummary();
+}
+
+function renderGuardSelects(){
+  ['guardReady','guardNeeds'].forEach(id=>{
+    const sel = document.getElementById(id);
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Pilih anggota&hellip;</option>' +
+      members.filter(m=>m.name.trim()).map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+    if(current) sel.value = current;
+  });
+}
+
+function renderMatrix(){
+  const svg = document.getElementById('matrix');
+  const pad = 60, size = 520, plot = size - pad*2;
+  const mid = pad + plot/2;
+  let html = `
+    <rect x="${pad}" y="${pad}" width="${plot/2}" height="${plot/2}" fill="#f1e3dd" opacity="0.55"/>
+    <rect x="${mid}" y="${pad}" width="${plot/2}" height="${plot/2}" fill="#dfe9e2" opacity="0.7"/>
+    <rect x="${pad}" y="${mid}" width="${plot/2}" height="${plot/2}" fill="#e7eaee" opacity="0.7"/>
+    <rect x="${mid}" y="${mid}" width="${plot/2}" height="${plot/2}" fill="#fbf3df" opacity="0.6"/>
+    <rect x="${pad}" y="${pad}" width="${plot}" height="${plot}" fill="none" stroke="#3c4856" stroke-width="1.5"/>
+    <line x1="${mid}" y1="${pad}" x2="${mid}" y2="${pad+plot}" stroke="#3c4856" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="${pad}" y1="${mid}" x2="${pad+plot}" y2="${mid}" stroke="#3c4856" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="${pad+12}" y="${pad+24}" font-size="13" font-weight="700" fill="#9a3324" font-family="sans-serif">BIMBING</text>
+    <text x="${mid+12}" y="${pad+24}" font-size="13" font-weight="700" fill="#2f6b4f" font-family="sans-serif">DELEGASIKAN</text>
+    <text x="${pad+12}" y="${pad+plot-14}" font-size="13" font-weight="700" fill="#5b6472" font-family="sans-serif">ARAHKAN</text>
+    <text x="${mid+12}" y="${pad+plot-14}" font-size="13" font-weight="700" fill="#a98325" font-family="sans-serif">NYALAKAN</text>
+    <text x="${size/2}" y="${size-14}" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#101826">SKILL &rsaquo;</text>
+    <text x="18" y="${size/2}" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#101826" transform="rotate(-90 18 ${size/2})">WILL &rsaquo;</text>
+  `;
+
+  members.filter(m=>m.name.trim()).forEach(m=>{
+    const x = pad + ((m.skill-1)/3)*plot;
+    const y = pad + plot - ((m.will-1)/3)*plot;
+    html += `
+      <circle cx="${x}" cy="${y}" r="9" fill="#9a3324" stroke="#fff" stroke-width="2"/>
+      <text x="${x}" y="${y-14}" text-anchor="middle" font-size="12" font-weight="700" font-family="sans-serif" fill="#101826">${m.name}</text>
+    `;
+  });
+
+  svg.innerHTML = html;
+}
+
+function renderSummary(){
+  const list = document.getElementById('summaryList');
+  const empty = document.getElementById('summaryEmpty');
+  const valid = members.filter(m=>m.name.trim());
+  if(valid.length===0){
+    list.style.display='none'; empty.style.display='block';
+    return;
+  }
+  empty.style.display='none'; list.style.display='grid';
+  list.innerHTML = valid.map(m=>{
+    const q = quadrant(m.skill,m.will).label;
+    return `<li><strong>${m.name}</strong> &mdash; Skill ${m.skill}, Will ${m.will} &middot; <em>${q}</em>${m.evidence? ' &middot; '+m.evidence : ''}</li>`;
+  }).join('');
+}
+
+document.getElementById('addMember').addEventListener('click', ()=>{
+  members.push(newMember());
+  renderMembers();
+});
+
+document.getElementById('sendBtn').addEventListener('click', ()=>{
+  const valid = members.filter(m=>m.name.trim());
+  if(valid.length===0){
+    alert('Isi minimal satu anggota tim sebelum mengirim pemetaan.');
+    return;
+  }
+  alert('Pemetaan tersimpan secara lokal di halaman ini. Untuk benar-benar mengirim ke penyelenggara program, gunakan kanal pengumpulan tugas pre-learning IPPI yang berlaku di departemen Anda.');
+});
+
+['hoursUrgent','hoursImportant'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=>{
+    const u = parseFloat(document.getElementById('hoursUrgent').value)||0;
+    const i = parseFloat(document.getElementById('hoursImportant').value)||0;
+    const total = u+i;
+    const pu = total>0 ? (u/total*100) : 50;
+    const pi = total>0 ? (i/total*100) : 50;
+    const row = document.getElementById('barRow');
+    row.innerHTML = `<div class="urgent" style="width:${pu}%"></div><div class="important" style="width:${pi}%"></div>`;
+  });
+});
+
+// seed five empty rows like the original five-person branch
+for(let k=0;k<5;k++) members.push(newMember());
+renderMembers();
+</script>
+
+</body>
+</html>
